@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RVAZ - Cifras do Mercado Financeiro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #1e3a8a;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;e="1rem"
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .content {
+            position: absolute;
+            z-index: 10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .cta-button {
+            background-color: #03fc18;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .cta-button:hover {
+            background-color: #098500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas com as cifras do mercado -->
+    <canvas id="canvas"></canvas>
+
+   
+    <!-- Conteúdo da página -->
+    <div class="content">
+        <h2>Bem-vindo à RVAZ</h2>
+        <p>Aqui você encontra soluções financeiras inovadoras para crescer no mercado.</p>
+        <a href="contato.html" class="cta-button">Fale com um Especialista</a>
+    </div>
+    <div class="absolute z-20 content translate-y-72 bg-green-600">
+        <button id="aumentar-fonte" class="btn">A+</button>
+
+        <button id="diminuir-fonte" class="btn">A-</button>
+    </div>
+
+    <script>
+        // Configurações do Canvas
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Definindo o tamanho do canvas
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const columns = canvas.width / 30; // Quantidade de colunas
+        const drops = [];
+
+        // Criando um array para os drops (cifras caindo)
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        // Função que desenha os números e anima a tela
+        function draw() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height); // Preenche o fundo
+
+            ctx.fillStyle = "#00ff00"; // Cor das cifras (verde como no mercado financeiro)
+            ctx.font = "20px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const number = Math.floor(Math.random() * 10); // Números aleatórios de 0 a 9
+                ctx.fillText(number, i * 30, drops[i] * 30); // Desenha o número
+
+                if (drops[i] * 30 > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0; // Reinicia o drop se ele sair da tela
+                }
+
+                drops[i]++; // Movimento do número (queda)
+            }
+        }
+
+        // Atualiza a tela a cada 50ms
+        setInterval(draw, 50);
+
+        // Ajusta o tamanho do canvas quando a janela for redimensionada
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drops.length = 0; // Reseta as gotas
+            for (let i = 0; i < columns; i++) {
+                drops[i] = 1;
+            }
+        });
+    </script>
+
+    <script src="MAIN.JS"></script>
+</body>
+</html>
