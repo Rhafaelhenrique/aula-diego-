@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RVAZ - Fale com um Especialista</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+       canvas {
+            display: block;
+            position: relative;
+            top: 0;
+            left: 0;
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .form-container h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+        }
+
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .form-container textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .cta-button {
+            background-color: #0004ff;
+            color: #ffffffdf;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .cta-button:hover {
+            background-color: #0004e5;
+        }
+    </style>
+</head>
+<body>
+    <div class="absolute z-30 bg-green-600 p-0 m-10 flex justify-end">
+        <button id="aumentar-fonte" class="btn">A+</button>
+        <button id="diminuir-fonte" class="btn">A-</button>
+        <button id="alterna-contraste" class="btn btn-primary fw-bold" aria-label="Alterna o contraste de cores"> <i class="bi bi-shadows"></i></button>
+    </div>
+    <!-- Formulário de Contato -->
+    <div class=" content">
+        <div class="form-container">
+            <h2>Fale com um Especialista</h2>
+            <p>Preencha os campos abaixo para entrar em contato com a RVAZ.</p>
+
+            <!-- Formulário de Contato -->
+            <form action="javascript:void(0);" method="POST">
+                <div>
+                    <input type="text" id="nome" placeholder="Seu nome" required>
+                </div>
+                <div>
+                    <input type="email" id="email" placeholder="Seu e-mail" required>
+                </div>
+                <div>
+                    <textarea id="mensagem" placeholder="Sua mensagem" required></textarea>
+                </div>
+                <button type="submit" class="cta-button" onclick="enviarFormulario()">Enviar</button>
+            </form>
+        </div>
+    </div>
+    
+    <canvas id="canvas"></canvas>
+
+    <script>
+        // Função para simular o envio do formulário
+        function enviarFormulario() {
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const mensagem = document.getElementById('mensagem').value;
+            
+            if (nome && email && mensagem) {
+                alert("Sua mensagem foi enviada com sucesso!");
+                // Aqui você poderia adicionar a lógica para enviar os dados para um servidor, por exemplo.
+                // Por enquanto, apenas reseta os campos do formulário.
+                document.getElementById('nome').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('mensagem').value = '';
+            } else {    
+                alert("Por favor, preencha todos os campos.");
+            }
+        }
+    </script>
+
+<script>
+    // Configurações do Canvas
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // Definindo o tamanho do canvas
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const columns = canvas.width / 30; // Quantidade de colunas
+    const drops = [];
+
+    // Criando um array para os drops (cifras caindo)
+    for (let i = 0; i < columns; i++) {
+        drops[i] = 1;
+    }
+
+    // Função que desenha os números e anima a tela
+    function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height); // Preenche o fundo
+
+        ctx.fillStyle = "#00ff00"; // Cor das cifras (verde como no mercado financeiro)
+        ctx.font = "20px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            const number = Math.floor(Math.random() * 10); // Números aleatórios de 0 a 9
+            ctx.fillText(number, i * 30, drops[i] * 30); // Desenha o número
+
+            if (drops[i] * 30 > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0; // Reinicia o drop se ele sair da tela
+            }
+
+            drops[i]++; // Movimento do número (queda)
+        }
+    }
+
+    // Atualiza a tela a cada 50ms
+    setInterval(draw, 50);
+
+    // Ajusta o tamanho do canvas quando a janela for redimensionada
+    window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        drops.length = 0; // Reseta as gotas
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+    });
+</script>
+<script src="MAIN.JS"></script> 
+</body>
+</html>
